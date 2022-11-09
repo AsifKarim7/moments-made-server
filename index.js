@@ -17,6 +17,7 @@ async function run() {
         const serviceCollection = client.db('momentsMade').collection('services');
         const reviewCollection = client.db('momentsMade').collection('reviews');
 
+        // Services
 
         app.get('/services', async (req, res) => {
             const query = {}
@@ -38,6 +39,20 @@ async function run() {
             const cursor = serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
+        })
+
+        // Reviews
+
+        app.get('/reviews', async (req, res) => {
+            let query = {};
+            if (req.query.service) {
+                query = {
+                    service: req.query.service
+                }
+            }
+            const cursor = reviewCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews);
         })
 
         app.post('/reviews', async (req, res) => {
